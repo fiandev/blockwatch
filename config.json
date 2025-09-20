@@ -1,0 +1,40 @@
+{
+  "networks": [
+    {
+      "name": "Ethereum Mainnet",
+      "rpcUrl": "https://ethereum.publicnode.com",
+      "chainId": 1
+    },
+    {
+      "name": "Binance Smart Chain Mainnet",
+      "rpcUrl": "https://bsc-dataseed.binance.org/",
+      "chainId": 56
+    },
+    {
+      "name": "Polygon Mainnet",
+      "rpcUrl": "https://polygon-rpc.com/",
+      "chainId": 137
+    },
+    {
+      "name": "Tron Mainnet",
+      "rpcUrl": "https://api.trongrid.io",
+      "chainId": null
+    },
+    {
+      "name": "Solana Mainnet",
+      "rpcUrl": "https://api.mainnet-beta.solana.com",
+      "chainId": null
+    },
+    {
+      "name": "Sui Mainnet",
+      "rpcUrl": "https://fullnode.mainnet.sui.io:443",
+      "chainId": null
+    },
+    {
+      "name": "TON Mainnet",
+      "rpcUrl": "https://ton-access.com",
+      "chainId": null
+    }
+  ],
+  "amount": 0.01
+}
