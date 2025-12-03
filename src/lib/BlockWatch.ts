@@ -17,7 +17,7 @@ export class BlockWatch {
     if (process.env.TELEGRAM_BOT_TOKEN) {
       this.telegramService = new TelegramService({
         botToken: process.env.TELEGRAM_BOT_TOKEN,
-        channel: this.config?.telegram?.channel || 'crypto'
+        channel: this.config?.telegram?.channel || "crypto",
       });
     }
   }
@@ -27,7 +27,9 @@ export class BlockWatch {
    */
   async watch(provider: BaseProvider) {
     const startTime = new Date().toLocaleTimeString();
-    console.log(`🚀 [${startTime}] Starting network monitoring: ${provider.network.name} (${provider.network.symbol})`);
+    console.log(
+      `🚀 [${startTime}] Starting network monitoring: ${provider.network.name} (${provider.network.symbol})`,
+    );
 
     // Run continuously
     while (true) {
@@ -39,20 +41,18 @@ export class BlockWatch {
           continue;
         }
 
-        console.log(`📡 Found ${transactions.length} new transactions on ${provider.network.symbol}. Processing...`);
+        // console.log(`📡 Found ${transactions.length} new transactions on ${provider.network.symbol}. Processing...`);
 
         let matchedCount = 0;
         for (const tx of transactions) {
           if (this.matchFilters(tx, provider.network)) {
             // Enhanced log when the filter matches
-            console.log(`🚨 [MATCH] Large transaction detected on ${provider.network.symbol} | Hash: ${tx.hash.substring(0, 10)}... | Amount: ${tx.value}`);
+            // console.log(
+            //   `🚨 [MATCH] Large transaction detected on ${provider.network.symbol} | Hash: ${tx.hash.substring(0, 10)}... | Amount: ${tx.value}`,
+            // );
             await this.execute(tx, provider.network);
             matchedCount++;
           }
-        }
-
-        if (matchedCount > 0) {
-          console.log(`✅ Finished processing. ${matchedCount} significant transactions executed.`);
         }
 
         // Wait a bit before checking for new transactions again
@@ -60,14 +60,17 @@ export class BlockWatch {
       } catch (error) {
         const errorTime = new Date().toLocaleTimeString();
         // Prominent error log
-        console.error(`❌❌ [${errorTime}] CRITICAL! Error on ${provider.network.name} network:`, error);
+        console.error(
+          `❌❌ [${errorTime}] CRITICAL! Error on ${provider.network.name} network:`,
+          error,
+        );
         await this.delay(5000); // Wait 5 seconds on error
       }
     }
   }
 
   private delay(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   /**
@@ -142,27 +145,31 @@ export class BlockWatch {
 
     // Map symbol to CoinGecko ID
     const symbolToCoinGeckoId: Record<string, string> = {
-      'ETH': 'ethereum',
-      'BNB': 'binancecoin',
-      'POL': 'polygon-ecosystem-token',
-      'MATIC': 'polygon-ecosystem-token', // MATIC is the old symbol for POL
-      'TRON': 'tron',
-      'SOL': 'solana',
-      'SUI': 'sui',
-      'TON': 'the-open-network',
-      'BTC': 'bitcoin',
-      'WBTC': 'wrapped-bitcoin',
-      'USDC': 'usd-coin',
-      'USDT': 'tether',
-      'DAI': 'dai'
+      ETH: "ethereum",
+      BNB: "binancecoin",
+      POL: "polygon-ecosystem-token",
+      MATIC: "polygon-ecosystem-token", // MATIC is the old symbol for POL
+      TRON: "tron",
+      SOL: "solana",
+      SUI: "sui",
+      TON: "the-open-network",
+      BTC: "bitcoin",
+      WBTC: "wrapped-bitcoin",
+      USDC: "usd-coin",
+      USDT: "tether",
+      DAI: "dai",
     };
 
     const coinGeckoId = symbolToCoinGeckoId[symbol] || symbol.toLowerCase();
-    const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${coinGeckoId}&vs_currencies=usd`);
+    const response = await fetch(
+      `https://api.coingecko.com/api/v3/simple/price?ids=${coinGeckoId}&vs_currencies=usd`,
+    );
     const data: any = await response.json();
 
     if (!data[coinGeckoId] || !data[coinGeckoId].usd) {
-      console.warn(`Could not fetch price for symbol: ${symbol} (CoinGecko ID: ${coinGeckoId})`);
+      console.warn(
+        `Could not fetch price for symbol: ${symbol} (CoinGecko ID: ${coinGeckoId})`,
+      );
       return 0; // Return 0 if price is not available
     }
 
@@ -172,7 +179,10 @@ export class BlockWatch {
     return price;
   }
 
-  private async formatTelegramMessage(tx: Transaction, network: NetworkConfig): Promise<string> {
+  private async formatTelegramMessage(
+    tx: Transaction,
+    network: NetworkConfig,
+  ): Promise<string> {
     const value = parseFloat(ethers.formatEther(tx.value));
     const price = await this.getAssetPrice(network.symbol);
     const amountUsd = value * price;
