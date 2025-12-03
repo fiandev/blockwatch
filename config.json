@@ -2,39 +2,59 @@
   "networks": [
     {
       "name": "Ethereum Mainnet",
+      "symbol": "ETH",
       "rpcUrl": "https://ethereum.publicnode.com",
-      "chainId": 1
+      "scannerUrl": "https://etherscan.io",
+      "chainId": 1,
+      "amount": 1000
     },
     {
       "name": "Binance Smart Chain Mainnet",
+      "symbol": "BNB",
       "rpcUrl": "https://bsc-dataseed.binance.org/",
-      "chainId": 56
+      "scannerUrl": "https://bscscan.com",
+      "chainId": 56,
+      "amount": 5000
     },
     {
       "name": "Polygon Mainnet",
+      "symbol": "POL",
       "rpcUrl": "https://polygon-rpc.com/",
-      "chainId": 137
+      "scannerUrl": "https://polygonscan.com",
+      "chainId": 137,
+      "amount": 500000
     },
     {
       "name": "Tron Mainnet",
+      "symbol": "TRON",
       "rpcUrl": "https://api.trongrid.io",
-      "chainId": null
+      "scannerUrl": "https://tronscan.org",
+      "chainId": null,
+      "amount": 1000000
     },
     {
       "name": "Solana Mainnet",
+      "symbol": "SOL",
       "rpcUrl": "https://api.mainnet-beta.solana.com",
-      "chainId": null
+      "scannerUrl": "https://solscan.io",
+      "chainId": null,
+      "amount": 10000
     },
     {
       "name": "Sui Mainnet",
+      "symbol": "SUI",
       "rpcUrl": "https://fullnode.mainnet.sui.io:443",
-      "chainId": null
+      "scannerUrl": "https://suiexplorer.com",
+      "chainId": null,
+      "amount": 10000
     },
     {
       "name": "TON Mainnet",
+      "symbol": "TON",
       "rpcUrl": "https://ton-access.com",
-      "chainId": null
+      "scannerUrl": "https://tonscan.org",
+      "chainId": null,
+      "amount": 50000
     }
-  ],
-  "amount": 0.01
+  ]
 }
