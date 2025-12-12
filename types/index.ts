@@ -3,6 +3,7 @@ export interface NetworkConfig {
   rpcUrl: string;
   symbol: string;
   scannerUrl: string;
+  arkhamUrl: string;
   chainId: number | null;
   amount?: number;
 }

@@ -4,6 +4,7 @@
       "name": "Ethereum Mainnet",
       "symbol": "ETH",
       "rpcUrl": "https://ethereum.publicnode.com",
+      "arkhamUrl": "https://intel.arkm.com/explorer",
       "scannerUrl": "https://etherscan.io",
       "chainId": 1,
       "amount": 1000
@@ -12,6 +13,7 @@
       "name": "Binance Smart Chain Mainnet",
       "symbol": "BNB",
       "rpcUrl": "https://bsc-dataseed.binance.org/",
+      "arkhamUrl": "https://intel.arkm.com/explorer",
       "scannerUrl": "https://bscscan.com",
       "chainId": 56,
       "amount": 5000
@@ -20,6 +22,7 @@
       "name": "Polygon Mainnet",
       "symbol": "POL",
       "rpcUrl": "https://polygon-rpc.com/",
+      "arkhamUrl": "https://polygonscan.com",
       "scannerUrl": "https://polygonscan.com",
       "chainId": 137,
       "amount": 500000
@@ -28,6 +31,7 @@
       "name": "Tron Mainnet",
       "symbol": "TRON",
       "rpcUrl": "https://api.trongrid.io",
+      "arkhamUrl": "https://tronscan.org",
       "scannerUrl": "https://tronscan.org",
       "chainId": null,
       "amount": 1000000
@@ -36,6 +40,7 @@
       "name": "Solana Mainnet",
       "symbol": "SOL",
       "rpcUrl": "https://api.mainnet-beta.solana.com",
+      "arkhamUrl": "https://solscan.io",
       "scannerUrl": "https://solscan.io",
       "chainId": null,
       "amount": 10000
@@ -44,6 +49,7 @@
       "name": "Sui Mainnet",
       "symbol": "SUI",
       "rpcUrl": "https://fullnode.mainnet.sui.io:443",
+      "arkhamUrl": "https://suiexplorer.com",
       "scannerUrl": "https://suiexplorer.com",
       "chainId": null,
       "amount": 10000
@@ -52,6 +58,7 @@
       "name": "TON Mainnet",
       "symbol": "TON",
       "rpcUrl": "https://ton-access.com",
+      "arkhamUrl": "https://tonscan.org",
       "scannerUrl": "https://tonscan.org",
       "chainId": null,
       "amount": 50000

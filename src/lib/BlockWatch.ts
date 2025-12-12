@@ -186,16 +186,18 @@ export class BlockWatch {
     const value = parseFloat(ethers.formatEther(tx.value));
     const price = await this.getAssetPrice(network.symbol);
     const amountUsd = value * price;
+    
+    const blockExplorer = network.scannerUrl || network.arkhamUrl; 
 
     return `🚨 <b>Big Transaction Alert!</b>
 
 <b>Network:</b> ${network.name}
 <b>Value:</b> ${Number(value.toFixed(3)).toLocaleString()} ${network.symbol} (${Number(amountUsd.toFixed(3)).toLocaleString()} USD)
 
-<b>From:</b> <a href="${network.scannerUrl}/address/${tx.from}">${tx.from}</a>
-<b>To:</b> <a href="${network.scannerUrl}/address/${tx.to}">${tx.to}</a>
+<b>From:</b> <a href="${network.arkhamUrl}/address/${tx.from}">${tx.from}</a>
+<b>To:</b> <a href="${network.arkhamUrl}/address/${tx.to}">${tx.to}</a>
 
-<b>TX Hash:</b> <a href="${network.scannerUrl}/tx/${tx.hash}">${tx.hash}</a>
-<b>Block:</b> <a href="${network.scannerUrl}/block/${tx.blockNumber}">${tx.blockNumber}</a>`;
+<b>TX Hash:</b> <a href="${network.arkhamUrl}/tx/${tx.hash}">${tx.hash}</a>
+<b>Block:</b> <a href="${blockExplorer}/block/${tx.blockNumber}">${tx.blockNumber}</a>`;
   }
 }
