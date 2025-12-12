@@ -197,7 +197,7 @@ export class BlockWatch {
 <b>From:</b> <a href="${network.arkhamUrl}/address/${tx.from}">${tx.from}</a>
 <b>To:</b> <a href="${network.arkhamUrl}/address/${tx.to}">${tx.to}</a>
 
-<b>TX Hash:</b> <a href="${network.arkhamUrl}/tx/${tx.hash}">${tx.hash}</a>
+<b>TX Hash:</b> <a href="${network.scannerUrl}/tx/${tx.hash}">${tx.hash}</a>
 <b>Block:</b> <a href="${blockExplorer}/block/${tx.blockNumber}">${tx.blockNumber}</a>`;
   }
 }

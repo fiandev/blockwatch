@@ -22,7 +22,7 @@
       "name": "Polygon Mainnet",
       "symbol": "POL",
       "rpcUrl": "https://polygon-rpc.com/",
-      "arkhamUrl": "https://polygonscan.com",
+      "arkhamUrl": "https://intel.arkm.com/explorer",
       "scannerUrl": "https://polygonscan.com",
       "chainId": 137,
       "amount": 500000
@@ -31,7 +31,7 @@
       "name": "Tron Mainnet",
       "symbol": "TRON",
       "rpcUrl": "https://api.trongrid.io",
-      "arkhamUrl": "https://tronscan.org",
+      "arkhamUrl": "https://intel.arkm.com/explorer",
       "scannerUrl": "https://tronscan.org",
       "chainId": null,
       "amount": 1000000
@@ -40,7 +40,7 @@
       "name": "Solana Mainnet",
       "symbol": "SOL",
       "rpcUrl": "https://api.mainnet-beta.solana.com",
-      "arkhamUrl": "https://solscan.io",
+      "arkhamUrl": "https://intel.arkm.com/explorer",
       "scannerUrl": "https://solscan.io",
       "chainId": null,
       "amount": 10000
@@ -49,7 +49,7 @@
       "name": "Sui Mainnet",
       "symbol": "SUI",
       "rpcUrl": "https://fullnode.mainnet.sui.io:443",
-      "arkhamUrl": "https://suiexplorer.com",
+      "arkhamUrl": "https://intel.arkm.com/explorer",
       "scannerUrl": "https://suiexplorer.com",
       "chainId": null,
       "amount": 10000
@@ -58,7 +58,7 @@
       "name": "TON Mainnet",
       "symbol": "TON",
       "rpcUrl": "https://ton-access.com",
-      "arkhamUrl": "https://tonscan.org",
+      "arkhamUrl": "https://intel.arkm.com/explorer",
       "scannerUrl": "https://tonscan.org",
       "chainId": null,
       "amount": 50000
