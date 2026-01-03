@@ -20,8 +20,7 @@
     {
       "name": "Binance Smart Chain Mainnet",
       "symbol": "BNB",
-      "rpcUrl": "https://bsc-dataseed.binance.org/",
-      "arkhamUrl": "https://intel.arkm.com/explorer",
+      "rpcUrl": "https://bsc-dataseed1.ninicoin.io/",
       "scannerUrl": "https://bscscan.com",
       "chainId": 56,
       "amount": 5000

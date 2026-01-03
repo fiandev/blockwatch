@@ -8,6 +8,7 @@ const nodeCache = new NodeCache({ stdTTL: 600 }); // 10 minutes cache
 
 export class BlockWatch {
   private config: Config;
+  private cachePrevMatchedTx: Set<string> = new Set();
   private telegramService?: TelegramService;
 
   constructor(config: Config) {
@@ -37,19 +38,23 @@ export class BlockWatch {
         const transactions = await provider.getLatestTransactions();
 
         if (!transactions || transactions.length === 0) {
-          console.log("🚀 No transactions found");
-          await this.delay(5000); // Wait 2 seconds
+          await this.delay(2000); // Wait 2 seconds
           continue;
         }
 
         let matchedCount = 0;
+
         for (const tx of transactions) {
+          if (this.cachePrevMatchedTx.has(tx.hash)) continue;
           if (this.matchFilters(tx, provider.network)) {
-            // Enhanced log when the filter matches
-            // console.log(
-            //   `🚨 [MATCH] Large transaction detected on ${provider.network.symbol} | Hash: ${tx.hash.substring(0, 10)}... | Amount: ${tx.value}`,
-            // );
             await this.execute(tx, provider.network);
+
+            if (this.cachePrevMatchedTx.size >= 1000) {
+              this.cachePrevMatchedTx.clear();
+            }
+
+            this.cachePrevMatchedTx.add(tx.hash);
+
             matchedCount++;
           }
         }
@@ -89,7 +94,12 @@ export class BlockWatch {
 
     // Filter amount (dalam ETH/BNB/MATIC dll, normalisasi ke ether)
     if (network.amount !== undefined && network.amount !== null) {
-      const value = parseFloat(ethers.formatEther(tx.value));
+      let value: number;
+      if (network.symbol === "BTC") {
+        value = parseFloat(tx.value) / 100000000; // Convert satoshis to BTC
+      } else {
+        value = parseFloat(ethers.formatEther(tx.value));
+      }
       if (value < network.amount) return false;
     }
 
@@ -118,16 +128,17 @@ export class BlockWatch {
    * Eksekusi jika transaksi sesuai filter
    */
   async execute(tx: Transaction, network: NetworkConfig) {
-    console.log("🚀 Match transaction found!");
-    console.log({
-      hash: tx.hash,
-      from: tx.from,
-      to: tx.to,
-      value: ethers.formatEther(tx.value),
-      blockNumber: tx.blockNumber,
-    });
+    console.log(
+      `[${network.symbol}] Match transaction found - ${tx.hash}`,
+      this.cachePrevMatchedTx.size
+    );
 
-    return;
+    let value: string | number;
+    if (network.symbol === "BTC") {
+      value = parseFloat(tx.value) / 100000000;
+    } else {
+      value = ethers.formatEther(tx.value);
+    }
 
     // Send Telegram alert if configured
     if (this.telegramService) {
@@ -184,7 +195,13 @@ export class BlockWatch {
     tx: Transaction,
     network: NetworkConfig
   ): Promise<string> {
-    const value = parseFloat(ethers.formatEther(tx.value));
+    let value: number;
+    if (network.symbol === "BTC") {
+      value = parseFloat(tx.value) / 100000000;
+    } else {
+      value = parseFloat(ethers.formatEther(tx.value));
+    }
+
     const price = await this.getAssetPrice(network.symbol);
     const amountUsd = value * price;
 

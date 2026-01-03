@@ -206,8 +206,8 @@ async function main() {
         case "Ethereum Mainnet":
         case "Binance Smart Chain Mainnet":
         case "Polygon Mainnet": {
-          // const evmProvider = new EvmProvider(network);
-          // providers.push(blockWatch.watch(evmProvider));
+          const evmProvider = new EvmProvider(network);
+          providers.push(blockWatch.watch(evmProvider));
           break;
         }
         case "BTC Mainnet": {
