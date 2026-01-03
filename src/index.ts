@@ -9,6 +9,7 @@ import { TronProvider } from "./lib/providers/TRC20";
 import { SolanaProvider } from "./lib/providers/Solana";
 import { SuiProvider } from "./lib/providers/SUI";
 import TonProvider from "./lib/providers/TON";
+import BtcProvider from "./lib/providers/BTC";
 
 async function getConfig() {
   let config: NetworkConfig | Record<string, any> = {};
@@ -205,8 +206,13 @@ async function main() {
         case "Ethereum Mainnet":
         case "Binance Smart Chain Mainnet":
         case "Polygon Mainnet": {
-          const evmProvider = new EvmProvider(network);
-          providers.push(blockWatch.watch(evmProvider));
+          // const evmProvider = new EvmProvider(network);
+          // providers.push(blockWatch.watch(evmProvider));
+          break;
+        }
+        case "BTC Mainnet": {
+          const btcProvider = new BtcProvider(network);
+          providers.push(blockWatch.watch(btcProvider));
           break;
         }
         case "Tron Mainnet": {
@@ -215,13 +221,13 @@ async function main() {
           break;
         }
         case "Solana Mainnet": {
-          const solanaProvider = new SolanaProvider(network);
-          providers.push(blockWatch.watch(solanaProvider));
+          // const solanaProvider = new SolanaProvider(network);
+          // providers.push(blockWatch.watch(solanaProvider));
           break;
         }
         case "Sui Mainnet": {
-          const suiProvider = new SuiProvider(network);
-          providers.push(blockWatch.watch(suiProvider));
+          // const suiProvider = new SuiProvider(network);
+          // providers.push(blockWatch.watch(suiProvider));
           break;
         }
         case "TON Mainnet": {

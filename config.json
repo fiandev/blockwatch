@@ -1,6 +1,14 @@
 {
   "networks": [
     {
+      "name": "BTC Mainnet",
+      "symbol": "BTC",
+      "rpcUrl": "wss://mempool.space/api/v1/ws",
+      "scannerUrl": "https://btcscan.org",
+      "chainId": null,
+      "amount": 0.0000001
+    },
+    {
       "name": "Ethereum Mainnet",
       "symbol": "ETH",
       "rpcUrl": "https://ethereum.publicnode.com",

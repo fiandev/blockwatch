@@ -28,7 +28,7 @@ export class BlockWatch {
   async watch(provider: BaseProvider) {
     const startTime = new Date().toLocaleTimeString();
     console.log(
-      `🚀 [${startTime}] Starting network monitoring: ${provider.network.name} (${provider.network.symbol})`,
+      `🚀 [${startTime}] Starting network monitoring: ${provider.network.name} (${provider.network.symbol})`
     );
 
     // Run continuously
@@ -37,11 +37,10 @@ export class BlockWatch {
         const transactions = await provider.getLatestTransactions();
 
         if (!transactions || transactions.length === 0) {
-          await this.delay(2000); // Wait 2 seconds
+          console.log("🚀 No transactions found");
+          await this.delay(5000); // Wait 2 seconds
           continue;
         }
-
-        // console.log(`📡 Found ${transactions.length} new transactions on ${provider.network.symbol}. Processing...`);
 
         let matchedCount = 0;
         for (const tx of transactions) {
@@ -62,7 +61,7 @@ export class BlockWatch {
         // Prominent error log
         console.error(
           `❌❌ [${errorTime}] CRITICAL! Error on ${provider.network.name} network:`,
-          error,
+          error
         );
         await this.delay(5000); // Wait 5 seconds on error
       }
@@ -99,7 +98,7 @@ export class BlockWatch {
       const match = addresses.some(
         (addr) =>
           addr.toLowerCase() === tx.from?.toLowerCase() ||
-          addr.toLowerCase() === tx.to?.toLowerCase(),
+          addr.toLowerCase() === tx.to?.toLowerCase()
       );
       if (!match) return false;
     }
@@ -107,7 +106,7 @@ export class BlockWatch {
     // Filter contracts
     if (contracts && contracts.length > 0) {
       const match = contracts.some(
-        (c) => c.toLowerCase() === tx.to?.toLowerCase(),
+        (c) => c.toLowerCase() === tx.to?.toLowerCase()
       );
       if (!match) return false;
     }
@@ -127,6 +126,8 @@ export class BlockWatch {
       value: ethers.formatEther(tx.value),
       blockNumber: tx.blockNumber,
     });
+
+    return;
 
     // Send Telegram alert if configured
     if (this.telegramService) {
@@ -162,13 +163,13 @@ export class BlockWatch {
 
     const coinGeckoId = symbolToCoinGeckoId[symbol] || symbol.toLowerCase();
     const response = await fetch(
-      `https://api.coingecko.com/api/v3/simple/price?ids=${coinGeckoId}&vs_currencies=usd`,
+      `https://api.coingecko.com/api/v3/simple/price?ids=${coinGeckoId}&vs_currencies=usd`
     );
     const data: any = await response.json();
 
     if (!data[coinGeckoId] || !data[coinGeckoId].usd) {
       console.warn(
-        `Could not fetch price for symbol: ${symbol} (CoinGecko ID: ${coinGeckoId})`,
+        `Could not fetch price for symbol: ${symbol} (CoinGecko ID: ${coinGeckoId})`
       );
       return 0; // Return 0 if price is not available
     }
@@ -181,23 +182,27 @@ export class BlockWatch {
 
   private async formatTelegramMessage(
     tx: Transaction,
-    network: NetworkConfig,
+    network: NetworkConfig
   ): Promise<string> {
     const value = parseFloat(ethers.formatEther(tx.value));
     const price = await this.getAssetPrice(network.symbol);
     const amountUsd = value * price;
-    
-    const blockExplorer = network.scannerUrl || network.arkhamUrl; 
+
+    const blockExplorer = network.scannerUrl || network.arkhamUrl;
 
     return `🚨 <b>Big Transaction Alert!</b>
 
 <b>Network:</b> ${network.name}
-<b>Value:</b> ${Number(value.toFixed(3)).toLocaleString()} ${network.symbol} (${Number(amountUsd.toFixed(3)).toLocaleString()} USD)
+<b>Value:</b> ${Number(value.toFixed(3)).toLocaleString()} ${
+      network.symbol
+    } (${Number(amountUsd.toFixed(3)).toLocaleString()} USD)
 
 <b>From:</b> <a href="${network.arkhamUrl}/address/${tx.from}">${tx.from}</a>
 <b>To:</b> <a href="${network.arkhamUrl}/address/${tx.to}">${tx.to}</a>
 
 <b>TX Hash:</b> <a href="${network.scannerUrl}/tx/${tx.hash}">${tx.hash}</a>
-<b>Block:</b> <a href="${blockExplorer}/block/${tx.blockNumber}">${tx.blockNumber}</a>`;
+<b>Block:</b> <a href="${blockExplorer}/block/${tx.blockNumber}">${
+      tx.blockNumber
+    }</a>`;
   }
 }
