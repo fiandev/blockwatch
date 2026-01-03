@@ -29,3 +29,10 @@ export interface Config {
     channel?: string;
   };
 }
+
+export interface AddressLabel {
+  address: string;
+  chainId: number;
+  label: string;
+  nameTag: string;
+}

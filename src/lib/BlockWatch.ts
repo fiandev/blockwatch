@@ -1,8 +1,14 @@
 import { ethers } from "ethers";
 import type BaseProvider from "./providers/BaseProvider";
-import type { Config, NetworkConfig, Transaction } from "../../types";
+import type {
+  AddressLabel,
+  Config,
+  NetworkConfig,
+  Transaction,
+} from "../../types";
 import { TelegramService } from "./services/TelegramService";
 import NodeCache from "node-cache";
+import fs from "fs";
 
 const nodeCache = new NodeCache({ stdTTL: 600 }); // 10 minutes cache
 
@@ -10,9 +16,11 @@ export class BlockWatch {
   private config: Config;
   private cachePrevMatchedTx: Set<string> = new Set();
   private telegramService?: TelegramService;
+  private addressLabels: AddressLabel[];
 
   constructor(config: Config) {
     this.config = config;
+    this.addressLabels = JSON.parse(fs.readFileSync("./labels.json", "utf-8"));
 
     // Initialize Telegram service if configured
     if (process.env.TELEGRAM_BOT_TOKEN) {
@@ -21,6 +29,30 @@ export class BlockWatch {
         channel: this.config?.telegram?.channel || "crypto",
       });
     }
+  }
+  private getAddressLabel(address: string): AddressLabel | undefined {
+    if (!address) return undefined;
+
+    const addr = address.toLowerCase();
+
+    // ===== BNB SYSTEM / VALIDATOR ADDRESSES =====
+    // 0x0000000000000000000000000000000000001xxx
+    if (/^0x0{36}1[0-9a-f]{3}$/.test(addr)) {
+      return {
+        address,
+        label: "BNB Validator / System",
+        chainId: 1,
+        nameTag: "Validator / System",
+      };
+    }
+
+    // ===== HARDCODED LABEL LIST (ARKHAM-STYLE SEED) =====
+    const manual = this.addressLabels.find(
+      (label) => label.address.toLowerCase() === addr
+    );
+    if (manual) return manual;
+
+    return undefined;
   }
 
   /**
@@ -143,7 +175,8 @@ export class BlockWatch {
     // Send Telegram alert if configured
     if (this.telegramService) {
       const message = await this.formatTelegramMessage(tx, network);
-      await this.telegramService.sendMessage(message);
+      console.log(message);
+      // await this.telegramService.sendMessage(message);
     }
   }
 
@@ -205,6 +238,8 @@ export class BlockWatch {
     const price = await this.getAssetPrice(network.symbol);
     const amountUsd = value * price;
 
+    const fromLabel = this.getAddressLabel(tx.from);
+    const toLabel = this.getAddressLabel(tx.to);
     const blockExplorer = network.scannerUrl || network.arkhamUrl;
 
     return `🚨 <b>Big Transaction Alert!</b>
@@ -214,8 +249,12 @@ export class BlockWatch {
       network.symbol
     } (${Number(amountUsd.toFixed(3)).toLocaleString()} USD)
 
-<b>From:</b> <a href="${network.arkhamUrl}/address/${tx.from}">${tx.from}</a>
-<b>To:</b> <a href="${network.arkhamUrl}/address/${tx.to}">${tx.to}</a>
+<b>From:</b> <a href="${network.arkhamUrl}/address/${tx.from}">${tx.from}</a> ${
+      fromLabel ? `(${fromLabel.nameTag})` : "(Unknown)"
+    }
+<b>To:</b> <a href="${network.arkhamUrl}/address/${tx.to}">${tx.to}</a> ${
+      toLabel ? `(${toLabel.nameTag})` : "(Unknown)"
+    }
 
 <b>TX Hash:</b> <a href="${network.scannerUrl}/tx/${tx.hash}">${tx.hash}</a>
 <b>Block:</b> <a href="${blockExplorer}/block/${tx.blockNumber}">${

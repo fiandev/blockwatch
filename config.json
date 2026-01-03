@@ -6,7 +6,7 @@
       "rpcUrl": "wss://mempool.space/api/v1/ws",
       "scannerUrl": "https://btcscan.org",
       "chainId": null,
-      "amount": 0.0000001
+      "amount": 1000
     },
     {
       "name": "Ethereum Mainnet",
@@ -22,6 +22,7 @@
       "symbol": "BNB",
       "rpcUrl": "https://bsc-dataseed1.ninicoin.io/",
       "scannerUrl": "https://bscscan.com",
+      "arkhamUrl": "https://intel.arkm.com/explorer",
       "chainId": 56,
       "amount": 5000
     },
